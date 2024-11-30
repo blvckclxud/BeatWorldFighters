@@ -1,0 +1,424 @@
+import random
+
+# player health and stamina
+player1 = [10,10]
+player2 = [10,10]
+p1CanMove = True
+p2CanMove = True
+
+gameOver = False
+
+# check stamina to approve a move
+def checkStamina(fighter, target):
+   if fighter[1] >= 0:
+      p1CanMove = False
+   else:
+      p1CanMove = True
+
+   if target[1] >= 0:
+      p2CanMove = False
+   else:
+      p2CanMove = True
+
+# check is we can modify a list
+
+def punch(fighter, target):
+ # basic attack
+ target[0] -=1
+ fighter[1] -= 1
+#  print("you punch ")
+
+def kick(fighter, target):
+ # power attack
+ target[0] -= 2
+ fighter[1] -=2
+#  print("you kick ")
+	
+def block(fighter, target):
+ # block attack
+ target[0] -= 0
+ fighter[1] -= 1
+#  print("you block ")
+
+def dodge(fighter, target):
+ # dodge attack
+ target[0] -= 0
+ fighter[1] -= 2
+#  print("you dodge ")
+	
+def rest(fighter):
+ # recover 
+ fighter[1] += 1
+#  print("you rest")
+   
+# game logic
+# HERE IS THE CENTRAL GAME LOGIC!!!!
+
+
+
+def game(player, op):
+ #define variable values
+	
+ player = player1 # set player health and stamina
+ op = player2 # set op health and stam
+
+	
+ # ask for user input
+ print("what you gonna do, dog?")
+ print("choose: punch, kick, block, dodge, rest. \n")
+ action = input("make a move \n").lower()
+ valid = ["punch", "kick", "block", "dodge", "rest"]
+ # need to make a list to compare actions
+ if action not in valid:
+  print("please choose a valid move")
+  action = input("make a move ")
+ if action in valid:
+  actionOp = random.choice(valid)
+  print("Your opponent decides to ", actionOp)
+#   print(action)
+	
+ # why is it not stopping?
+	
+	
+ # compare moves
+	
+ #action(player, op)
+ 
+
+  if actionOp != "dodge" or "block": # basic player actions if not dodged or blocked
+    if p1CanMove:
+        if action == "punch":
+            if p1CanMove == True:
+                punch(player,op)
+                print("You punch your opponent! ")
+            else:
+                print("You're winded! ")
+
+        if action == "kick":
+            if p1CanMove == True:
+                kick(player,op)
+                print("You kick your opponent! ")
+            else:
+                print("You're winded! ")
+
+
+        if action == "block":
+            if p1CanMove == True:
+                block(player,op)
+                print("You block your opponent! ")
+            else:
+                print("You're winded! ")
+
+        if action == "dodge":
+            if p1CanMove == True:
+                dodge(player,op)
+                print("You dodge your opponent! ")
+            else:
+                print("You're winded! ")
+
+    if action == "rest":
+        rest(player)
+        print("You rest.")
+
+  elif actionOp == "dodge": # if opponent dodges
+    if p1CanMove:
+
+        if action == "punch":
+            if p1CanMove == True:
+
+                print("Your opponent dodged your punch! ")
+            # punch(player,op)
+            #op[0] -= 1
+                player[1] -= 1
+            else:
+                print("Too tired! ")
+        
+        elif action == "kick":
+            if p1CanMove == True:
+                print("Your opponent dodged your kick! ")
+                kick(player,op)
+                #op[0] -= 2
+                player[1] -= 2
+            else:
+                print("You're winded! ")
+        
+        elif action == "block":
+            if p1CanMove == True:
+            
+                print("You block. ")
+                block(player,op)
+                #player[1] -= 1
+            else:
+                print("You're winded! ")
+        
+        elif action == "dodge":
+            if p1CanMove == True:
+            
+                print("You dodge! ")
+                dodge(player,op)
+                #player[1] -= 2 
+            else:
+                print("You're winded! ")
+
+    elif action == "rest":
+        print("You rest. ")
+        rest(player)
+
+  elif actionOp == "block": # if opponent blocks
+    if p1CanMove:
+
+        if action == "punch":
+            if p1CanMove == True:
+                print("Your opponent blocked your punch! ")
+                # punch(player,op)
+                #op[0] -= 1
+                op[1] -= 1
+            else:
+                print("You're winded! ")
+        
+        elif action == "kick":
+            if p1CanMove == True:
+                print("Your opponent blocked your kick! ")
+                kick(player,op)
+                #op[0] -= 2
+                op[1] -= 2
+            else:
+                print("You're winded! ")
+        
+        elif action == "block":
+            if p1CanMove == True:
+            
+                print("Your opponent also blocks! ")
+                block(player,op)
+                #player[1] -= 1
+            else:
+                print("You're winded! ")
+        
+        elif action == "dodge":
+            if p1CanMove == True:
+            
+                print("Your opponent blocks your dodge! ")
+                dodge(player,op)
+                #player[1] -= 2 
+            else:
+                print("You're winded! ")
+        
+    elif action == "rest":
+        print("Your opponent holds their block! ")
+        rest(player)
+
+  if action != "block" or "dodge": #basic opponent actions if player doesn't block or dodge
+
+
+    if p2CanMove:
+        if actionOp == "punch":
+            if p2CanMove == True:
+                print("Your opponent punches! ")
+                punch(op,player)
+            else:
+                print("Your opponent is winded! ")
+
+        if actionOp == "kick":
+            if p2CanMove == True:
+                print("Your opponent kicks! ")
+                kick(op,player)
+            else:
+                print("Your opponent is winded! ")
+
+        if actionOp == "block":
+            if p2CanMove == True:
+                print("Your opponent blocks! ")
+                block(op,player)
+            else:
+                print("Youre opponent is winded! ")
+
+        if actionOp == "dodge":
+            if p2CanMove == True:
+            
+                print("Your opponent dodges")
+                dodge(op,player)
+            else:
+                print("Your opponent is winded! ")
+
+    if actionOp == "rest":
+        print("Your opponent rests. ")
+        rest(op)
+
+  elif action == "block": # check if you block
+    if p2CanMove:
+     
+        if actionOp == "punch":
+            if p2CanMove == True:
+            
+                print("You block your opponents punch!")
+                punch(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+        elif actionOp == "kick":
+            if p2CanMove == True:
+                print("You block your opponents kick!")
+                kick(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+        elif actionOp == "block":
+            if p2CanMove == True:
+                print("Your opponent blocks! ")
+                block(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+        elif actionOp == "dodge":
+            if p2CanMove == True:
+            
+                print("Your opponent dodges! ")
+                dodge(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+    elif actionOp == "rest":
+        print("Your opponent rests. ")
+        rest(op)
+
+  elif action == "dodge": # check if you dodge
+    if p2CanMove:
+     
+        if actionOp == "punch":
+            if p2CanMove == True:
+            
+                print("You dodge your opponents punch!")
+                punch(op,player)
+                #op[0] -= 1
+                player[1] -= 1
+            else:
+                print("Your opponent is winded! ")
+        
+        elif actionOp == "kick":
+            if p2CanMove == True:
+            
+                print("You dodge your opponents kick!")
+                kick(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+        elif actionOp == "block":
+            if p2CanMove == True:
+                print("Your opponent blocks your dodge! ")
+                block(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+        elif actionOp == "dodge":
+            if p2CanMove == True:
+            
+                print("Your opponent also dodges! ")
+                dodge(op,player)
+            else:
+                print("Your opponent is winded! ")
+        
+    elif actionOp == "rest":
+        print("Your opponent rests while you dodge. ")
+        rest(op)
+
+	
+ print("your health is ", player[0])
+ print("your opponents health is ", op[0])
+	
+ if op[0] <= 0:
+  print("you win!!! \n")
+  print("game over. \n")
+  
+  playagain = input("play again? (y/n) \n")
+  if playagain != "y":
+     print("thanks for playing!! \n")
+     gameOver == True
+     exit()
+  else:
+        op[0] = 10
+        op[1] = 10
+        player[0] = 10
+        player[1] = 10
+ if player[0] <= 0:
+    print("You got knocked the heck out, mang! ")
+    playagain = input("play again? (y/n) \n")
+    if playagain != "y":
+            print("thanks for playing!! \n")
+            gameOver == True
+            exit()
+    else:
+                op[0] = 10
+                op[1] = 10
+                player[0] = 10
+                player[1] = 10
+        
+     
+# LETS TRY GAME IN A WHILE LOOP
+#game(player1, player2)
+player = player1
+op = player2  
+def checkHealth(fighter,target): # a functio to check the health of the combatants
+    print("Health checked! ")
+    # player = fighter
+    # op = target
+    
+    if fighter[0] >= 10: # cap health
+        fighter[0] = 10
+
+    if fighter[0] <= 0: #floor health
+        fighter[0] = 0
+        print("You have been knocked out! \n")
+        # gameOver = True
+
+ 
+    if target[0] >= 10: # cap opponent health
+        target[0] = 10
+
+    if target[0] <= 0: # floor opponent health
+        target[0] = 0
+        print("Opponent is knocked out! \n")
+        # gameOver = True
+
+
+def checkStamina(fighter,target):
+    print("Stamina checked!")
+    global p1CanMove, p2CanMove #oh no! Not global variables!
+
+    # player = fighter
+    # op = target
+    if fighter[1] >= 10: # cap stamina
+        fighter[1] = 10
+
+    if fighter[1] <= 0: # floor stamina
+        fighter[1] = 0
+        print("You're out of stamina! ")
+
+    
+    if target[1] >= 10: # cap opponent stamina
+        target[1] = 10
+
+    if target[1] <= 0: # floor opponent stamina
+        target = 0
+        print("Your opponent is out of Stamina! ")
+    
+    # Update movement flags
+    p1CanMove = player[1] > 0
+    p2CanMove = op[1] > 0
+
+    # # Return whether each fighter can move
+    # p1CanMove = player[1] > 0
+    # p2CanMove = op[1] > 0
+    # return p1CanMove, p2CanMove
+
+   
+while player[0] > 0:
+    
+    if gameOver != True:
+        
+        checkHealth(player,op)
+        checkStamina(player,op)
+        print("You took ", )
+        print("You have ", player[1], "stamina")
+        print("Your opponent has ", op[1], "stamina\n")
+        game(player1, player2)
+
